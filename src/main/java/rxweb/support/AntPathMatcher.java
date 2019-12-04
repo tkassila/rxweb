@@ -180,7 +180,10 @@ public class AntPathMatcher implements PathMatcher {
                 boolean match = false;
                 strExt = m.group(iGroup);
                 if (strExt == null || strExt.trim().length() == 0) {
-                    return doMachtNormal(pattern, path, fullMatch, uriTemplateVariables);
+                    boolean ret = doMachtNormal(pattern, path, fullMatch, uriTemplateVariables);
+                    if (ret)
+                        return ret;
+                    return ret;
                 }
                 else
                 {

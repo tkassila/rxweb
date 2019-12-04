@@ -131,7 +131,7 @@ public class AntPathMatcherTest {
         assertFalse(pathMatcher.matchStart("test*", "tsttest"));
         assertFalse(pathMatcher.matchStart("test*", "test/"));
         assertFalse(pathMatcher.matchStart("test*", "test/t"));
-        assertTrue(pathMatcher.matchStart("test/*", "test"));
+        assertFalse(pathMatcher.match("test/*", "test"));
         assertTrue(pathMatcher.matchStart("test/t*.txt", "test"));
         assertFalse(pathMatcher.matchStart("*test*", "tsttst"));
         assertFalse(pathMatcher.matchStart("*test", "tsttst"));
@@ -278,5 +278,21 @@ public class AntPathMatcherTest {
         assertTrue(pathMatcher.matchStart("Android 4_ New Features for Application Development [eBook.{epub}", "Android 4_ New Features for Application Development [eBook.epub"));
         assertTrue(pathMatcher.matchStart("Android 4_ New Features for Application Development [eBook*.{epub}", "Android 4_ New Features for Application Development [eBook12.epub"));
         assertFalse(pathMatcher.matchStart("Android 4_ New Features for Application Development [eBook.{epub}", "Android 4_ New Features for Application Development [eBook12.epub"));
+        assertFalse(pathMatcher.matchStart("Android 4_ New Features for Application Development [eBook13.{epub}", "Android 4_ New Features for Application Development [eBook12.epub"));
+        assertTrue(pathMatcher.matchStart("**/.drivein", ".drivein"));
+        assertTrue(pathMatcher.matchStart("**/.drivein*.*", ".drivein"));
+        assertFalse(pathMatcher.match("**/.driveinfo.calib*.*", ".driveinfo.calib"));
+        assertFalse(pathMatcher.match(".driveinfo.calib*.*", ".driveinfo.calib1"));
+        assertFalse(pathMatcher.match("**/.driveinfo.calib*.*", "C:\\tmp\\sonyreader3\\.driveinfo.calib"));
+      //  assertFalse(pathMatcher.matchStart("**/.driveinfo.calib*.d", "C:/tmp/sonyreader3/.driveinfo.calib"));
+        assertFalse(pathMatcher.match("**/.driveinfo.calib.calib", "C:/tmp/sonyreader3/.driveinfo.calib"));
+        assertTrue(pathMatcher.match(".driveinfo.calib*", ".driveinfo.calib1"));
+        pathMatcher = new AntPathMatcher("\\");
+        assertTrue(pathMatcher.match("**\\.driveinfo.calib", "C:\\tmp\\sonyreader3\\.driveinfo.calib"));
+        assertTrue(pathMatcher.match(".driveinfo.calib1", ".driveinfo.calib1"));
+        assertTrue(pathMatcher.match(".driveinfo.calib*", ".driveinfo.calib1"));
+        assertTrue(pathMatcher.match("**\\.driveinfo.calib*", "C:\\tmp\\sonyreader3\\.driveinfo.calib"));
+        assertFalse(pathMatcher.match("**\\\\.driveinfo\\.calib*", "C:\\tmp\\sonyreader3\\.driveinfo.calib"));
+        assertTrue(pathMatcher.match("**\\\\.driveinfo\\.calib*.*", "C:\\tmp\\sonyreader3\\\\.driveinfo\\.calib1.1"));
     }
 }
